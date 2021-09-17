@@ -13,6 +13,7 @@ T1A T1B T1C
 T4A T4B T4C
 ```
 
+![](https://github.com/mrodikov/rds_release_issues/blob/master/images/T1T2T3T4_set1.png)
 ## Ситуация 1 - Ручной revert T4 (без ошибок)
 Активный релиз - `T4`
 
@@ -20,6 +21,8 @@ T4A T4B T4C
 Валидный ли это релиз? 
 Наверное да, поскольку он существовал в таком виде когда мы после общего релиза T1 сделали T2 и T3 
 для отдельных проектов и оно работало.
+
+![](https://github.com/mrodikov/rds_release_issues/blob/master/images/T4A_reverted_set1.png)
 
 ## Ситуация 2 - Ручная активация T3C (без ошибок)
 Активный релиз - `T4`
@@ -29,6 +32,8 @@ T4A T4B T4C
 
 Мы можем сделать ручной revert T3C до T4C, что правильно (восстанавливаем стабильное состояние).
 
+![](https://github.com/mrodikov/rds_release_issues/blob/master/images/T3C_activated_set1.png)
+
 ## Ситуация 3 - Ручной revert релиза T4 (падающая активация T3C)
 Активный релиз - `T4`
 
@@ -37,6 +42,8 @@ T4A T4B T4C
 Формально по коду это правильно, но фактически у нас сломанный релиз.
 И ещё мы имеем возможность откатить "T2B" до T4B, чтобы получить ещё один сломанный релиз `T1A T4B T4C`.
 Но не имеем возможности активировать релиз T4 целиком, потому как "Waiting for children"
+
+![](https://github.com/mrodikov/rds_release_issues/blob/master/images/T4A_reverted_T3C_failed_set1.png)
 
 ## Ситуация 4 - (падающая активация T4C)
 Активный релиз `T1A T2B T3C`
@@ -49,6 +56,9 @@ T1A -> T4A
 T1B -> T2B
 T1C -> T3C
 ```
+
+![](https://github.com/mrodikov/rds_release_issues/blob/master/images/T1AT2BT3C_to_T4_fail_set1.png)
+
 Проблема в том, что составные части релиза T4 не знают друг о друге и выкладываются по сути независимо, 
 то есть на момент времени когда часть релиза T4C зафейлилась у нас уже успешно выложились T4A и T4B 
 со всеми вытекающими изменениями в БД.
